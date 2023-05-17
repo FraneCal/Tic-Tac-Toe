@@ -60,9 +60,9 @@ def winner_or_draw():
 while True:
     view_board()
     user_choice("Player 1", "X")
-    view_board()
     if winner_or_draw():
         break
+    view_board()
     user_choice("Player 2", "O")
     if winner_or_draw():
         break
