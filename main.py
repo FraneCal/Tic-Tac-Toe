@@ -1,16 +1,12 @@
-# Tic Tac Toe
-
 board = [
     ['_', '_', '_'],
     ['_', '_', '_'],
     ['_', '_', '_']
 ]
 
-
 def view_board():
-    show_board = [print(row) for row in board]
-    return show_board
-
+    for row in board:
+        print(row)
 
 def user_choice(player_name, marker):
     while True:
@@ -29,43 +25,44 @@ def user_choice(player_name, marker):
         except ValueError as err:
             print(f"Invalid input: {err} Please try again.")
 
-
 def winner_or_draw():
 
-    # (elem == 'X' for elem in row) for row in board
-    # The code uses a nested generator expression to iterate over each row and each element in the board
+    # Check rows for wins
+    for row in board:
+        if all(elem == 'X' for elem in row):
+            print('X player wins.')
+            return True
+        elif all(elem == 'O' for elem in row):
+            print('O player wins.')
+            return True
 
-    # all(elem == 'X' for elem in row)
-    # The all() function is used to check if all elements in each row are equal to 'X' or 'O'
+    # Check columns for wins
+    for i in range(len(board[0])):
+        if all(row[i] == 'X' for row in board):
+            print('X player wins.')
+            return True
+        elif all(row[i] == 'O' for row in board):
+            print('O player wins.')
+            return True
 
-    # any(all(elem == 'X' for elem in row) for row in board)
-    # The any() function is used to check if any of the rows contain only 'X' or 'O'
-
-    row_contains_X = any(all(elem == 'X' for elem in row) for row in board)
-    col_contains_X = any(all(row[i] == 'X' for row in board) for i in range(len(board[0])))
-
-    row_contains_0 = any(all(elem == '0' for elem in row) for row in board)
-    col_contains_0 = any(all(row[i] == '0' for row in board) for i in range(len(board[0])))
-
-
-    if row_contains_X or col_contains_X:
+    # Check diagonals for wins
+    if all(board[i][i] == 'X' for i in range(len(board))) or all(board[i][len(board)-i-1] == 'X' for i in range(len(board))):
         print('X player wins.')
         return True
-    elif row_contains_0 or col_contains_0:
-        print('0 player wins.')
+    elif all(board[i][i] == 'O' for i in range(len(board))) or all(board[i][len(board)-i-1] == 'O' for i in range(len(board))):
+        print('O player wins.')
         return True
 
     if not any('_' in row for row in board):
         print('Draw')
         return True
 
-
 while True:
     user_choice("Player 1", "X")
     view_board()
     if winner_or_draw():
         break
-    user_choice("Player 2", "0")
+    user_choice("Player 2", "O")
     view_board()
     if winner_or_draw():
         break
